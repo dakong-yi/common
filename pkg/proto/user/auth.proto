@@ -4,42 +4,44 @@ package auth;
 option go_package = "./pkg/pb/auth";
 
 import "google/api/annotations.proto";
+import "pkg/proto/error/error.proto";
+
+message RegisterRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message RegisterResponse {
+  oneof response {
+    string user_id = 1;
+    error.Error error = 2;
+  }
+}
+
+message LoginRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message LoginResponse {
+  oneof response {
+    string token = 1;
+    error.Error error = 2;
+  }
+}
 
 service AuthService {
   rpc Register(RegisterRequest) returns (RegisterResponse) {
     option (google.api.http) = {
       post: "/v1/register"
-      body: "*"
+      body: "register_request"
     };
   }
-  
+
   rpc Login(LoginRequest) returns (LoginResponse) {
     option (google.api.http) = {
       post: "/v1/login"
-      body: "*"
+      body: "login_request"
     };
   }
-}
-
-message RegisterRequest {
-  string username = 1;
-  string password = 2;
-  string email = 3;
-  string device_id = 4;
-}
-
-message RegisterResponse {
-  bool success = 1;
-  string message = 2;
-}
-
-message LoginRequest {
-  string username = 1;
-  string password = 2;
-}
-
-message LoginResponse {
-  bool success = 1;
-  string message = 2;
-  string token = 3;
 }

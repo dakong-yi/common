@@ -1,0 +1,70 @@
+syntax = "proto3";
+
+package user;
+
+option go_package = "./pkg/pb/user";
+
+import "google/api/annotations.proto";
+import "pkg/proto/error/error.proto";
+
+message User {
+  int32 id = 1;
+  string username = 2;
+  string password = 3;
+  string email = 4;
+  repeated string phone_numbers = 5;
+}
+
+message GetUserRequest {
+  int32 user_id = 1;
+}
+
+message GetUserResponse {
+  oneof response {
+    User user = 1;
+    error.Error error = 2;
+  }
+}
+
+message ListUsersRequest {
+  int32 page_size = 1;
+  int32 page_token = 2;
+}
+
+message ListUsersResponse {
+  repeated User users = 1;
+  string next_page_token = 2;
+}
+
+message UpdateUserRequest {
+  int32 user_id = 1;
+  User user = 2;
+}
+
+message UpdateUserResponse {
+  oneof response {
+    User user = 1;
+    error.Error error = 2;
+  }
+}
+
+service UserService {
+  rpc GetUser(GetUserRequest) returns (GetUserResponse) {
+    option (google.api.http) = {
+      get: "/v1/users/{user_id}"
+    };
+  }
+
+  rpc ListUsers(ListUsersRequest) returns (ListUsersResponse) {
+    option (google.api.http) = {
+      get: "/v1/users"
+    };
+  }
+
+  rpc UpdateUser(UpdateUserRequest) returns (UpdateUserResponse) {
+    option (google.api.http) = {
+      put: "/v1/users/{user_id}"
+      body: "user"
+    };
+  }
+}
