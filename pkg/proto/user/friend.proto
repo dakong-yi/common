@@ -5,15 +5,7 @@ package friend;
 option go_package = "github.com/dakong-yi/common/pkg/pb/friend";
 
 import "google/api/annotations.proto";
-import "pkg/proto/error/error.proto";
 
-// 定义错误码枚举类型
-enum FriendError {
-  FRIEND_NOT_FOUND = 0;
-  FRIEND_ALREADY_EXISTS = 1;
-  FRIEND_BLOCKED = 2;
-  FRIEND_INVALID_INPUT = 3;
-}
 
 message Friend {
   string id = 1;
@@ -27,10 +19,7 @@ message AddFriendRequest {
 }
 
 message AddFriendResponse {
-    oneof response {
-        bool success = 1;
-        error.Error error = 2;
-    }
+  bool success = 1;
 }
 // Request message for accepting friend request
 message AcceptFriendRequestRequest {
@@ -39,33 +28,24 @@ message AcceptFriendRequestRequest {
 
 // Response message for accepting friend request
 message AcceptFriendRequestResponse {
-    oneof response {
-        bool success = 1;
-        error.Error error = 2;
-    }
+  bool success = 1;
 }
 
 // Request message for blacklisting a friend
 message BlockFriendRequest {
-    string user_id = 1;
+  string user_id = 1;
 }
   
 // Response message for blacklisting a friend
 message BlockFriendResponse {
-    oneof response {
-        bool success = 1;
-        error.Error error = 2;
-    }
+  bool success = 1;
 }
 message GetFriendRequest {
     string id = 1;
 }
   
 message GetFriendResponse {
-    oneof response {
-        Friend friend = 1;
-        error.Error error = 2;
-    }
+    Friend friend = 1;
 }
   
 message DeleteFriendRequest {
@@ -73,10 +53,7 @@ message DeleteFriendRequest {
 }
   
 message DeleteFriendResponse {
-    oneof response {
-        bool success = 1;
-        error.Error error = 2;
-    }
+    bool success = 1;
 }
 
 service FriendService {

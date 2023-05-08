@@ -4,7 +4,6 @@ package auth;
 option go_package = "github.com/dakong-yi/common/pkg/pb/auth";
 
 import "google/api/annotations.proto";
-import "pkg/proto/error/error.proto";
 
 message RegisterRequest {
   string email = 1;
@@ -12,10 +11,7 @@ message RegisterRequest {
 }
 
 message RegisterResponse {
-  oneof response {
-    string user_id = 1;
-    error.Error error = 2;
-  }
+  string user_id = 1;
 }
 
 message LoginRequest {
@@ -24,10 +20,7 @@ message LoginRequest {
 }
 
 message LoginResponse {
-  oneof response {
-    string token = 1;
-    error.Error error = 2;
-  }
+  string token = 1;
 }
 
 service AuthService {
