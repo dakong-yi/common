@@ -23,8 +23,9 @@ message AddFriendResponse {
 }
 // Request message for accepting friend request
 message AcceptFriendRequestRequest {
-  string request_id = 1;
-}
+  int32 user_id = 1;
+  int32 friend_id = 2;
+}  
 
 // Response message for accepting friend request
 message AcceptFriendRequestResponse {
@@ -67,7 +68,7 @@ service FriendService {
   // Accept friend request
   rpc AcceptFriendRequest(AcceptFriendRequestRequest) returns (AcceptFriendRequestResponse) {
     option (google.api.http) = {
-        post: "/v1/friends/{request_id}/accept"
+        post: "/v1/friends/{user_id}/{friend_id}/accept"
         body: "*"
     };
   }

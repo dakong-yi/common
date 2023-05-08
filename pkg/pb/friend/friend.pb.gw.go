@@ -84,14 +84,24 @@ func request_FriendService_AcceptFriendRequest_0(ctx context.Context, marshaler 
 		_   = err
 	)
 
-	val, ok = pathParams["request_id"]
+	val, ok = pathParams["user_id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "request_id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "user_id")
 	}
 
-	protoReq.RequestId, err = runtime.String(val)
+	protoReq.UserId, err = runtime.Int32(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "request_id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "user_id", err)
+	}
+
+	val, ok = pathParams["friend_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "friend_id")
+	}
+
+	protoReq.FriendId, err = runtime.Int32(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "friend_id", err)
 	}
 
 	msg, err := client.AcceptFriendRequest(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -118,14 +128,24 @@ func local_request_FriendService_AcceptFriendRequest_0(ctx context.Context, mars
 		_   = err
 	)
 
-	val, ok = pathParams["request_id"]
+	val, ok = pathParams["user_id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "request_id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "user_id")
 	}
 
-	protoReq.RequestId, err = runtime.String(val)
+	protoReq.UserId, err = runtime.Int32(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "request_id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "user_id", err)
+	}
+
+	val, ok = pathParams["friend_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "friend_id")
+	}
+
+	protoReq.FriendId, err = runtime.Int32(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "friend_id", err)
 	}
 
 	msg, err := server.AcceptFriendRequest(ctx, &protoReq)
@@ -344,7 +364,7 @@ func RegisterFriendServiceHandlerServer(ctx context.Context, mux *runtime.ServeM
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/friend.FriendService/AcceptFriendRequest", runtime.WithHTTPPathPattern("/v1/friends/{request_id}/accept"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/friend.FriendService/AcceptFriendRequest", runtime.WithHTTPPathPattern("/v1/friends/{user_id}/{friend_id}/accept"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -505,7 +525,7 @@ func RegisterFriendServiceHandlerClient(ctx context.Context, mux *runtime.ServeM
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/friend.FriendService/AcceptFriendRequest", runtime.WithHTTPPathPattern("/v1/friends/{request_id}/accept"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/friend.FriendService/AcceptFriendRequest", runtime.WithHTTPPathPattern("/v1/friends/{user_id}/{friend_id}/accept"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -593,7 +613,7 @@ func RegisterFriendServiceHandlerClient(ctx context.Context, mux *runtime.ServeM
 var (
 	pattern_FriendService_AddFriend_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "friends"}, ""))
 
-	pattern_FriendService_AcceptFriendRequest_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "friends", "request_id", "accept"}, ""))
+	pattern_FriendService_AcceptFriendRequest_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"v1", "friends", "user_id", "friend_id", "accept"}, ""))
 
 	pattern_FriendService_BlockFriend_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "friends", "user_id", "block"}, ""))
 
