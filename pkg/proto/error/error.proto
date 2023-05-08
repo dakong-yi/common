@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-option go_package = "./pkg/pb/error";
-
 package error;
+
+option go_package = "github.com/dakong-yi/common/pkg/pb/error";
 
 message Error {
   int32 code = 1;

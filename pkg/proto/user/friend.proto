@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package friend;
 
-option go_package = "./pkg/pb/friend";
+option go_package = "github.com/dakong-yi/common/pkg/pb/friend";
 
 import "google/api/annotations.proto";
 import "pkg/proto/error/error.proto";
