@@ -34,23 +34,20 @@ message AcceptFriendRequestResponse {
 
 // Request message for blacklisting a friend
 message BlockFriendRequest {
-  string user_id = 1;
+  int32 user_id = 1;
+  int32 friend_id = 2;
 }
   
 // Response message for blacklisting a friend
 message BlockFriendResponse {
   bool success = 1;
 }
-message GetFriendRequest {
-    string id = 1;
-}
+
   
-message GetFriendResponse {
-    Friend friend = 1;
-}
   
 message DeleteFriendRequest {
-    string id = 1;
+    int32 user_id = 1;
+    int32 friend_id = 2;
 }
   
 message DeleteFriendResponse {
@@ -75,21 +72,16 @@ service FriendService {
 
   rpc BlockFriend(BlockFriendRequest) returns (BlockFriendResponse){
     option (google.api.http) = {
-        post: "/v1/friends/{user_id}/block"
+        post: "/v1/friends/{user_id}/{friend_id}/block"
         body: "*"
     };
   };
-  // 添加获取好友信息的方法
-  rpc GetFriend(GetFriendRequest) returns (GetFriendResponse) {
-    option (google.api.http) = {
-      get: "/v1/friends/{id}"
-    };
-  }
+
 
   // 添加删除好友的方法
   rpc DeleteFriend(DeleteFriendRequest) returns (DeleteFriendResponse) {
     option (google.api.http) = {
-      delete: "/v1/friends/{id}"
+      delete: "/v1/friends/{user_id}/{friend_id}"
     };
   }
 }

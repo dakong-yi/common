@@ -22,7 +22,6 @@ const (
 	FriendService_AddFriend_FullMethodName           = "/friend.FriendService/AddFriend"
 	FriendService_AcceptFriendRequest_FullMethodName = "/friend.FriendService/AcceptFriendRequest"
 	FriendService_BlockFriend_FullMethodName         = "/friend.FriendService/BlockFriend"
-	FriendService_GetFriend_FullMethodName           = "/friend.FriendService/GetFriend"
 	FriendService_DeleteFriend_FullMethodName        = "/friend.FriendService/DeleteFriend"
 )
 
@@ -34,8 +33,6 @@ type FriendServiceClient interface {
 	// Accept friend request
 	AcceptFriendRequest(ctx context.Context, in *AcceptFriendRequestRequest, opts ...grpc.CallOption) (*AcceptFriendRequestResponse, error)
 	BlockFriend(ctx context.Context, in *BlockFriendRequest, opts ...grpc.CallOption) (*BlockFriendResponse, error)
-	// 添加获取好友信息的方法
-	GetFriend(ctx context.Context, in *GetFriendRequest, opts ...grpc.CallOption) (*GetFriendResponse, error)
 	// 添加删除好友的方法
 	DeleteFriend(ctx context.Context, in *DeleteFriendRequest, opts ...grpc.CallOption) (*DeleteFriendResponse, error)
 }
@@ -75,15 +72,6 @@ func (c *friendServiceClient) BlockFriend(ctx context.Context, in *BlockFriendRe
 	return out, nil
 }
 
-func (c *friendServiceClient) GetFriend(ctx context.Context, in *GetFriendRequest, opts ...grpc.CallOption) (*GetFriendResponse, error) {
-	out := new(GetFriendResponse)
-	err := c.cc.Invoke(ctx, FriendService_GetFriend_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *friendServiceClient) DeleteFriend(ctx context.Context, in *DeleteFriendRequest, opts ...grpc.CallOption) (*DeleteFriendResponse, error) {
 	out := new(DeleteFriendResponse)
 	err := c.cc.Invoke(ctx, FriendService_DeleteFriend_FullMethodName, in, out, opts...)
@@ -101,8 +89,6 @@ type FriendServiceServer interface {
 	// Accept friend request
 	AcceptFriendRequest(context.Context, *AcceptFriendRequestRequest) (*AcceptFriendRequestResponse, error)
 	BlockFriend(context.Context, *BlockFriendRequest) (*BlockFriendResponse, error)
-	// 添加获取好友信息的方法
-	GetFriend(context.Context, *GetFriendRequest) (*GetFriendResponse, error)
 	// 添加删除好友的方法
 	DeleteFriend(context.Context, *DeleteFriendRequest) (*DeleteFriendResponse, error)
 	mustEmbedUnimplementedFriendServiceServer()
@@ -120,9 +106,6 @@ func (UnimplementedFriendServiceServer) AcceptFriendRequest(context.Context, *Ac
 }
 func (UnimplementedFriendServiceServer) BlockFriend(context.Context, *BlockFriendRequest) (*BlockFriendResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method BlockFriend not implemented")
-}
-func (UnimplementedFriendServiceServer) GetFriend(context.Context, *GetFriendRequest) (*GetFriendResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetFriend not implemented")
 }
 func (UnimplementedFriendServiceServer) DeleteFriend(context.Context, *DeleteFriendRequest) (*DeleteFriendResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteFriend not implemented")
@@ -194,24 +177,6 @@ func _FriendService_BlockFriend_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
-func _FriendService_GetFriend_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetFriendRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(FriendServiceServer).GetFriend(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: FriendService_GetFriend_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FriendServiceServer).GetFriend(ctx, req.(*GetFriendRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _FriendService_DeleteFriend_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DeleteFriendRequest)
 	if err := dec(in); err != nil {
@@ -248,10 +213,6 @@ var FriendService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "BlockFriend",
 			Handler:    _FriendService_BlockFriend_Handler,
-		},
-		{
-			MethodName: "GetFriend",
-			Handler:    _FriendService_GetFriend_Handler,
 		},
 		{
 			MethodName: "DeleteFriend",
