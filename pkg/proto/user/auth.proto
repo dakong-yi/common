@@ -21,6 +21,10 @@ message LoginRequest {
 
 message LoginResponse {
   string token = 1;
+  string user_id = 2;
+  string username = 3;
+  string email = 4;
+  string avatar = 5;
 }
 
 service AuthService {
