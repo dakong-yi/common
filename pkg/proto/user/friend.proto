@@ -8,9 +8,11 @@ import "google/api/annotations.proto";
 
 
 message Friend {
-  string id = 1;
-  string name = 2;
+  string user_id = 1;
+  string username = 2;
   string email = 3;
+  string avatar = 4;
+  int32 status = 5;
 }
 
 message AddFriendRequest {
