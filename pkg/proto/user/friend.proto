@@ -59,6 +59,9 @@ message GetFriendListRequest {
 message GetFriendListResponse {
   repeated Friend friends = 1;
 }
+message FriendRequestList {
+  repeated Friend friends = 1;
+}
 
 service FriendService {
   rpc AddFriend(AddFriendRequest) returns (AddFriendResponse){
@@ -94,6 +97,11 @@ service FriendService {
   rpc GetFriendList(GetFriendListRequest) returns (GetFriendListResponse) {
     option (google.api.http) = {
       get: "/v1/friends/{user_id}"
+    };
+  }
+  rpc GetFriendRequestList(GetFriendListRequest) returns (FriendRequestList) {
+    option (google.api.http) = {
+      get: "/v1/friends/requests/{user_id}"
     };
   }
 }
