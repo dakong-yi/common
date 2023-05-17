@@ -13,6 +13,7 @@ message Chat {
   string group_id = 3;
   string last_message = 4;
   int64 timestamp = 5;
+  int32 chat_id = 6;
 }
 
 message AddChatRequest {
