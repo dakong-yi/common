@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+package chat;
+
+option go_package = "github.com/dakong-yi/common/pkg/pb/chat";
+
+import "google/api/annotations.proto";
+
+
+message Chat {
+  string user_id = 1;
+  string friend_id = 2;
+  string group_id = 3;
+  string last_message = 4;
+  int64 timestamp = 5;
+}
+
+message AddChatRequest {
+  int32 user_id = 1;
+  int32 friend_id = 2;
+  int32 group_id = 3;
+}
+
+message AddChatResponse {
+  bool success = 1;
+}
+
+message DeleteChatRequest {
+    int32 chat_id = 1;
+}
+  
+message DeleteChatResponse {
+    bool success = 1;
+}
+
+message GetChatListRequest {
+  int32 user_id = 1;
+}
+
+message GetChatListResponse {
+  repeated Chat chats = 1;
+}
+
+service ChatService {
+  rpc AddChat(AddChatRequest) returns (AddChatResponse){
+    option (google.api.http) = {
+        post: "/v1/chats"
+        body: "*"
+    };
+  }
+
+  // 删除聊天的方法
+  rpc DeleteChat(DeleteChatRequest) returns (DeleteChatResponse) {
+    option (google.api.http) = {
+      delete: "/v1/chats/{chat_id}"
+    };
+  }
+
+  rpc GetChatList(GetChatListRequest) returns (GetChatListResponse) {
+    option (google.api.http) = {
+      get: "/v1/chats/{user_id}"
+    };
+  }
+}
+
