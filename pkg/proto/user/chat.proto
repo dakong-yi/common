@@ -25,6 +25,11 @@ message AddChatResponse {
   bool success = 1;
 }
 
+message UpdateChatRequest {
+    int32 chat_id = 1;
+    string message = 2;
+}
+
 message DeleteChatRequest {
     int32 chat_id = 1;
 }
@@ -45,6 +50,13 @@ service ChatService {
   rpc AddChat(AddChatRequest) returns (AddChatResponse){
     option (google.api.http) = {
         post: "/v1/chats"
+        body: "*"
+    };
+  }
+
+  rpc UpdateChat(UpdateChatRequest) returns (AddChatResponse){
+    option (google.api.http) = {
+        post: "/v1/chats/{chat_id}"
         body: "*"
     };
   }

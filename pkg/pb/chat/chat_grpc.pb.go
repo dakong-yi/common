@@ -20,6 +20,7 @@ const _ = grpc.SupportPackageIsVersion7
 
 const (
 	ChatService_AddChat_FullMethodName     = "/chat.ChatService/AddChat"
+	ChatService_UpdateChat_FullMethodName  = "/chat.ChatService/UpdateChat"
 	ChatService_DeleteChat_FullMethodName  = "/chat.ChatService/DeleteChat"
 	ChatService_GetChatList_FullMethodName = "/chat.ChatService/GetChatList"
 )
@@ -29,6 +30,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ChatServiceClient interface {
 	AddChat(ctx context.Context, in *AddChatRequest, opts ...grpc.CallOption) (*AddChatResponse, error)
+	UpdateChat(ctx context.Context, in *UpdateChatRequest, opts ...grpc.CallOption) (*AddChatResponse, error)
 	// 删除聊天的方法
 	DeleteChat(ctx context.Context, in *DeleteChatRequest, opts ...grpc.CallOption) (*DeleteChatResponse, error)
 	GetChatList(ctx context.Context, in *GetChatListRequest, opts ...grpc.CallOption) (*GetChatListResponse, error)
@@ -45,6 +47,15 @@ func NewChatServiceClient(cc grpc.ClientConnInterface) ChatServiceClient {
 func (c *chatServiceClient) AddChat(ctx context.Context, in *AddChatRequest, opts ...grpc.CallOption) (*AddChatResponse, error) {
 	out := new(AddChatResponse)
 	err := c.cc.Invoke(ctx, ChatService_AddChat_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *chatServiceClient) UpdateChat(ctx context.Context, in *UpdateChatRequest, opts ...grpc.CallOption) (*AddChatResponse, error) {
+	out := new(AddChatResponse)
+	err := c.cc.Invoke(ctx, ChatService_UpdateChat_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -74,6 +85,7 @@ func (c *chatServiceClient) GetChatList(ctx context.Context, in *GetChatListRequ
 // for forward compatibility
 type ChatServiceServer interface {
 	AddChat(context.Context, *AddChatRequest) (*AddChatResponse, error)
+	UpdateChat(context.Context, *UpdateChatRequest) (*AddChatResponse, error)
 	// 删除聊天的方法
 	DeleteChat(context.Context, *DeleteChatRequest) (*DeleteChatResponse, error)
 	GetChatList(context.Context, *GetChatListRequest) (*GetChatListResponse, error)
@@ -86,6 +98,9 @@ type UnimplementedChatServiceServer struct {
 
 func (UnimplementedChatServiceServer) AddChat(context.Context, *AddChatRequest) (*AddChatResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddChat not implemented")
+}
+func (UnimplementedChatServiceServer) UpdateChat(context.Context, *UpdateChatRequest) (*AddChatResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateChat not implemented")
 }
 func (UnimplementedChatServiceServer) DeleteChat(context.Context, *DeleteChatRequest) (*DeleteChatResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteChat not implemented")
@@ -120,6 +135,24 @@ func _ChatService_AddChat_Handler(srv interface{}, ctx context.Context, dec func
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ChatServiceServer).AddChat(ctx, req.(*AddChatRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ChatService_UpdateChat_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateChatRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ChatServiceServer).UpdateChat(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ChatService_UpdateChat_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ChatServiceServer).UpdateChat(ctx, req.(*UpdateChatRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -170,6 +203,10 @@ var ChatService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AddChat",
 			Handler:    _ChatService_AddChat_Handler,
+		},
+		{
+			MethodName: "UpdateChat",
+			Handler:    _ChatService_UpdateChat_Handler,
 		},
 		{
 			MethodName: "DeleteChat",
